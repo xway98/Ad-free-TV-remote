@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build the Windows app
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File windows-agent/build.ps1
+
+      - name: Test the Windows app (pairing, session, lists, gyro maths)
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File tools/test-agent.ps1
+
+      - name: Test the Windows installer
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File tools/test-installer.ps1
+
+      - name: Build the release files (Windows installer and phone app)
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/release.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pocket-remote
+          path: dist/*
+
+      # pushing a tag such as v1.0.0 publishes the files as a GitHub release
+      - name: Publish a release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
