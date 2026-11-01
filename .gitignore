@@ -1,0 +1,28 @@
+# build output
+build/
+.gradle/
+dist/
+*.class
+*.apk
+*.exe
+*.ico
+*.aab
+
+# local machine settings (your own SDK path)
+local.properties
+
+# editors and OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# anything a test run or a paired device could leave behind
+*.log
+pair.log*
+agent-data/
+agent-test-data/
+pc-test-client*/
+remote-test-identity/
+identity/
