@@ -4,7 +4,9 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-
+# the release step needs to write to the repository's releases
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: windows-latest
