@@ -1,0 +1,39 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'app.pocketremote'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'app.pocketremote'
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Release builds are signed with the Android debug key so anyone can build and sideload them without setting up a keystore.
+            // To publish under your own key, replace this with your own signingConfig (see docs/building.md).
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main {
+            // The protocol core is plain Java, shared with the PC test harness in ../cli.
+            java.srcDirs = ['src/main/java', '../../core/src']
+        }
+    }
+}
